@@ -109,6 +109,56 @@ namespace Editor_de_Texto
 
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string textoFile = "";
+
+            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+            {
+                textoFile = File.ReadAllText(filePath);
+            }
+
+            if (archivoGuardado == false && rtbEditor.Text.CompareTo("") == 0)
+            {
+                rtbEditor.Clear();
+                archivoGuardado = false;
+            }
+            else if (archivoGuardado == false && rtbEditor.Text.CompareTo("") != 0)
+            {
+                DialogResult res = MessageBox.Show("¿Deseas guardar los cambios en un nuevo archivo?", "Sistema", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (res == DialogResult.Yes)
+                {
+                    guardarToolStripMenuItem_Click(null, null);
+                    rtbEditor.Clear();
+                    archivoGuardado = false;
+                }
+                else
+                {
+                    rtbEditor.Clear();
+                    archivoGuardado = false;
+                }
+            }
+            else if (archivoGuardado == true && rtbEditor.Text.CompareTo(textoFile) != 0)
+            {
+                DialogResult res = MessageBox.Show("¿Deseas guardar los nuevos cambios antes de abrir un archivo?", "Sistema", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (res == DialogResult.Yes)
+                {
+                    guardarToolStripMenuItem_Click(null, null);
+                    rtbEditor.Clear();
+                    archivoGuardado = false;
+                }
+                else
+                {
+                    rtbEditor.Clear();
+                    archivoGuardado = false;
+                }
+            }
+            else if (archivoGuardado == true && rtbEditor.Text.CompareTo(textoFile) == 0)
+            {
+                rtbEditor.Clear();
+                archivoGuardado = false;
+            }
+
             openFileDialogEditor.FileName = "";
             DialogResult resultado;
             resultado = openFileDialogEditor.ShowDialog();
